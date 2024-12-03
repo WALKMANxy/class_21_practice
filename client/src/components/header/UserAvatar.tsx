@@ -1,5 +1,5 @@
 // src/components/Header/UserAvatar.tsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Divider,
@@ -10,21 +10,25 @@ import {
   ListItemText,
   Popover,
   Typography,
-} from '@mui/material';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LoginIcon from '@mui/icons-material/Login';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { useNavigate } from 'react-router-dom';
-import {
-    Chat as ChatIcon,
-    Settings as SettingsIcon,
-  } from '@mui/icons-material';
+} from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LoginIcon from "@mui/icons-material/Login";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { useNavigate } from "react-router-dom";
+import { Settings as SettingsIcon } from "@mui/icons-material";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectIsLoggedIn, selectUsername } from "../../store/auth/authSlice";
+import { handleLogout } from "../../store/auth/authThunks";
+import AuthenticationModal from "../common/AuthenticationModal";
 
 const UserAvatar: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [authModalOpen, setAuthModalOpen] = useState(false); // State to control AuthenticationModal
   const navigate = useNavigate();
-  const isLoggedIn = false; // Hardcoded for now
+  const dispatch = useAppDispatch();
+
+  const isLoggedIn = useAppSelector(selectIsLoggedIn);
+  const username = useAppSelector(selectUsername);
 
   const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -35,31 +39,19 @@ const UserAvatar: React.FC = () => {
   };
 
   // Handlers for logged-in state
-  const handleMockChild3Click = () => {
-    navigate('/child3');
-    handleClose();
-  };
-
-  const handleMockChild4Click = () => {
-    navigate('/child4');
+  const handleSettingsClick = () => {
+    navigate("/eshop/settings");
     handleClose();
   };
 
   const handleLogoutClick = () => {
-    // Mock logout function
-    console.log('User logged out');
-    navigate('/');
     handleClose();
+    dispatch(handleLogout());
   };
 
-  // Handlers for logged-out state
-  const handleLoginClick = () => {
-    navigate('/login');
-    handleClose();
-  };
-
-  const handleRegisterClick = () => {
-    navigate('/register');
+  // Handler for logged-out state
+  const handleSignInClick = () => {
+    setAuthModalOpen(true); // Open the AuthenticationModal
     handleClose();
   };
 
@@ -68,7 +60,7 @@ const UserAvatar: React.FC = () => {
       <IconButton
         color="inherit"
         onClick={handleAvatarClick}
-        sx={{ color: isLoggedIn ? 'black' : 'gray' }}
+        sx={{ color: isLoggedIn ? "black" : "gray" }}
       >
         <AccountCircleIcon fontSize="large" />
       </IconButton>
@@ -78,54 +70,36 @@ const UserAvatar: React.FC = () => {
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
+          vertical: "bottom",
+          horizontal: "right",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: "top",
+          horizontal: "right",
         }}
         disableScrollLock={true}
         PaperProps={{
           sx: {
-            backdropFilter: 'blur(10px)',
-            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            backdropFilter: "blur(10px)",
+            backgroundColor: "rgba(255, 255, 255, 0.9)",
             borderRadius: 8,
             padding: 1,
-            minWidth: '220px',
+            minWidth: "220px",
             mt: 3,
           },
         }}
       >
         <Box sx={{ p: 2 }}>
-          {isLoggedIn ? (
+          {isLoggedIn && username ? (
             <>
               <Typography variant="h6" component="h2" gutterBottom>
-                User
+                {username}
               </Typography>
               <Divider sx={{ mb: 2 }} />
               <List>
-                {/* Mock Child 3 Link */}
                 <ListItem
                   button
-                  onClick={handleMockChild3Click}
-                  sx={{
-                    boxShadow: 1,
-                    borderRadius: 2,
-                    mb: 1,
-                  }}
-                >
-                  <ListItemIcon>
-                    <ChatIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Mock Child 3" />
-                </ListItem>
-                <Divider />
-
-                {/* Mock Child 4 Link */}
-                <ListItem
-                  button
-                  onClick={handleMockChild4Click}
+                  onClick={handleSettingsClick}
                   sx={{
                     boxShadow: 1,
                     borderRadius: 2,
@@ -135,7 +109,7 @@ const UserAvatar: React.FC = () => {
                   <ListItemIcon>
                     <SettingsIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Mock Child 4" />
+                  <ListItemText primary="Impostazioni" />
                 </ListItem>
                 <Divider />
 
@@ -158,14 +132,14 @@ const UserAvatar: React.FC = () => {
           ) : (
             <>
               <Typography variant="h6" component="h2" gutterBottom>
-                Welcome!
+                Benvenuto!
               </Typography>
               <Divider sx={{ mb: 2 }} />
               <List>
                 {/* Login Link */}
                 <ListItem
                   button
-                  onClick={handleLoginClick}
+                  onClick={handleSignInClick}
                   sx={{
                     boxShadow: 1,
                     borderRadius: 2,
@@ -175,33 +149,21 @@ const UserAvatar: React.FC = () => {
                   <ListItemIcon>
                     <LoginIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Login" />
-                </ListItem>
-
-                {/* Register Link */}
-                <ListItem
-                  button
-                  onClick={handleRegisterClick}
-                  sx={{
-                    boxShadow: 1,
-                    borderRadius: 2,
-                    mt: 2,
-                  }}
-                >
-                  <ListItemIcon>
-                    <HowToRegIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Register" />
+                  <ListItemText primary="Accedi" />
                 </ListItem>
               </List>
             </>
           )}
         </Box>
       </Popover>
+
+      {/* Authentication Modal */}
+      <AuthenticationModal
+        open={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+      />
     </>
   );
 };
-
-
 
 export default React.memo(UserAvatar);
