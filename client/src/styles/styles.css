@@ -1,0 +1,26 @@
+/* src/Styles/animate.css */
+.animate__animated.animate__fadeInUp {
+    animation-duration: 0.2s;
+  }
+  
+  .animate__animated.animate__fadeInDown {
+    animation-duration: 0.2s;
+  }
+  
+  .animate_animated.animate_fadein {
+    animation-duration: 0.05s;
+  }
+  
+  .animate_animated.animate_fadeOut {
+    animation-duration: 0.05s;
+  }
+  
+  .hidden-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .hidden-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
