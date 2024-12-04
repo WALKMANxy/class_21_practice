@@ -7,12 +7,14 @@ import {
   refreshSession,
   register,
 } from "../controllers/authController";
-import { authRateLimiter } from "../middlewares/rateLimiter";
+import { authRateLimiter, rateLimiter } from "../middlewares/rateLimiter";
 import { checkValidation } from "../middlewares/validate";
 import {
   loginValidationRules,
   registerValidationRules,
 } from "../constants/validationRules";
+import { UserController } from "../controllers/userController";
+import { authenticateUser } from "../middlewares/authentication";
 
 const router = Router();
 
@@ -29,7 +31,7 @@ router.post(
 router.post(
   "/login",
   loginValidationRules,
-  authRateLimiter,
+  rateLimiter,
   checkValidation,
   login
 );
@@ -39,5 +41,7 @@ router.post("/logout", authRateLimiter, logout);
 
 // Refresh Session Token
 router.post("/refresh-session", authRateLimiter, refreshSession);
+
+router.get("/:id", authRateLimiter, authenticateUser, UserController.getUserById)
 
 export default router;

@@ -11,6 +11,7 @@ import { handleLogin, handleLogout } from "../../store/auth/authThunks";
 import { saveAuthState } from "../../services/localStorage";
 import store from "../../app/store";
 import { User } from "../../models/User";
+import { toast } from "sonner";
 
 export const useAuth = () => {
   const dispatch = useAppDispatch();
@@ -103,7 +104,7 @@ export const useAuth = () => {
         return;
       }
 
-      setAlertMessage("Registrazione avvenuta con successo!");
+      setAlertMessage("Registrazione avvenuta con successo! Ora puoi effettuare il login.");
       setAlertSeverity("success");
       setAlertOpen(true);
       setRegistered(true);
@@ -212,7 +213,7 @@ export const useAuth = () => {
           if (keepMeSignedIn) {
             saveAuthState(store.getState().auth);
           }
-
+          toast.success("Login effettuato con successo!");
           onClose();
         }
       } else {

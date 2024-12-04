@@ -12,23 +12,47 @@ const FooterEshop: React.FC = () => {
       label: "Sicurezza",
       url: "https://assistenza.subito.it/hc/it/categories/10743145756317-Sicurezza",
     },
-    { label: "Condizioni", url: "https://info.subito.it/policies/condizioni-generali.htm" },
+    {
+      label: "Condizioni",
+      url: "https://info.subito.it/policies/condizioni-generali.htm",
+    },
     { label: "Privacy", url: "https://info.subito.it/policies/privacy.htm" },
     { label: "Gestisci cookies" },
-    { label: "TuttoSubito Vendi", url: "https://info.subito.it/affariadistanza/#vendi" },
-    { label: "TuttoSubito Compra", url: "https://info.subito.it/affariadistanza/#compra" },
-    { label: "Servizio TuttoSubito", url: "https://info.subito.it/policies/tutto-subito.htm" },
+    {
+      label: "TuttoSubito Vendi",
+      url: "https://info.subito.it/affariadistanza/#vendi",
+    },
+    {
+      label: "TuttoSubito Compra",
+      url: "https://info.subito.it/affariadistanza/#compra",
+    },
+    {
+      label: "Servizio TuttoSubito",
+      url: "https://info.subito.it/policies/tutto-subito.htm",
+    },
     {
       label: "Servizio TuttoSubito per Professionisti",
       url: "https://info.subito.it/policies/tutto-subito-per-professionisti.htm",
     },
     { label: "Inserisci annuncio" },
-    { label: "Promuovi annuncio", url: "https://info.subito.it/policies/condizioni-promuovi.htm" },
-    { label: "Consigli per la vendita", url: "https://info.subito.it/per-i-privati.htm" },
-    { label: "Negozi e Aziende", url: "https://impresapiu.subito.it//shops?xtfrom=footer_menu" },
+    {
+      label: "Promuovi annuncio",
+      url: "https://info.subito.it/policies/condizioni-promuovi.htm",
+    },
+    {
+      label: "Consigli per la vendita",
+      url: "https://info.subito.it/per-i-privati.htm",
+    },
+    {
+      label: "Negozi e Aziende",
+      url: "https://impresapiu.subito.it//shops?xtfrom=footer_menu",
+    },
     { label: "Subito per le aziende", url: "https://aziende.subito.it/" },
     { label: "Chi siamo", url: "https://info.subito.it/about.htm" },
-    { label: "Lavora con noi", url: "https://info.subito.it/lavora-con-noi.htm" },
+    {
+      label: "Lavora con noi",
+      url: "https://info.subito.it/lavora-con-noi.htm",
+    },
     { label: "Sostenibilità", url: "https://www.subito.it/magazine/green/" },
     { label: "Magazine", url: "https://www.subito.it/magazine/" },
     {
@@ -41,10 +65,26 @@ const FooterEshop: React.FC = () => {
   ];
 
   const socialLinks = [
-    { label: "Facebook", icon: "/images/facebook.svg", url: "https://it-it.facebook.com/subitoit" },
-    { label: "TikTok", icon: "/images/tiktok.svg", url: "https://www.tiktok.com/@subito_it" },
-    { label: "Instagram", icon: "/images/instagram.svg", url: "https://www.instagram.com/subito_it/" },
-    { label: "YouTube", icon: "/images/youtube.svg", url: "https://www.youtube.it/user/subitoit" },
+    {
+      label: "Facebook",
+      icon: "/images/facebook.svg",
+      url: "https://it-it.facebook.com/subitoit",
+    },
+    {
+      label: "TikTok",
+      icon: "/images/tiktok.svg",
+      url: "https://www.tiktok.com/@subito_it",
+    },
+    {
+      label: "Instagram",
+      icon: "/images/instagram.svg",
+      url: "https://www.instagram.com/subito_it/",
+    },
+    {
+      label: "YouTube",
+      icon: "/images/youtube.svg",
+      url: "https://www.youtube.it/user/subitoit",
+    },
   ];
 
   const appLinks = [
@@ -61,10 +101,25 @@ const FooterEshop: React.FC = () => {
   ];
 
   return (
-    <Box sx={{ backgroundColor: "#f8f9fc", py: 4, px: 2, my: 2, borderRadius: 10,         maxWidth: '980px', // Restrict content to 980px
-    }}>
-      <Grid container spacing={4} sx={{ width: "90vw", mx: "auto",         maxWidth: '980px', // Restrict content to 980px
- }}>
+    <Box
+      sx={{
+        backgroundColor: "#f8f9fc",
+        py: 4,
+        px: 2,
+        my: 2,
+        borderRadius: 10,
+        maxWidth: "980px", // Restrict content to 980px
+      }}
+    >
+      <Grid
+        container
+        spacing={4}
+        sx={{
+          width: "90vw",
+          mx: "auto",
+          maxWidth: "980px", // Restrict content to 980px
+        }}
+      >
         {/* Subito Section */}
         <Grid item xs={12} sm={4}>
           <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
@@ -116,7 +171,12 @@ const FooterEshop: React.FC = () => {
                     height: 24,
                   }}
                 >
-                  <img src={social.icon} alt={social.label} width="24" height="24" />
+                  <img
+                    src={social.icon}
+                    alt={social.label}
+                    width="24"
+                    height="24"
+                  />
                 </IconButton>
                 <Typography variant="body2" sx={{ color: "#333" }}>
                   {social.label}
@@ -165,9 +225,13 @@ const FooterEshop: React.FC = () => {
 
       {/* Footer Logo */}
       <Box sx={{ textAlign: "center", mt: 4 }}>
-        <img src="/images/subito-footer.svg" alt="Subito Logo" style={{ height: "40px" }} />
+        <img
+          src="/images/subito-footer.svg"
+          alt="Subito Logo"
+          style={{ height: "40px" }}
+        />
         <Typography variant="body2" sx={{ mt: 2, color: "#666" }}>
-          © 2024 Subito.it - P.IVA 05526340962
+          © 2024 walkmanxy - P.IVA XXXXXXXXXX
         </Typography>
       </Box>
     </Box>

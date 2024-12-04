@@ -15,36 +15,52 @@ import SearchIcon from '@mui/icons-material/Search';
 import RoomIcon from '@mui/icons-material/Room';
 import CloseIcon from '@mui/icons-material/Close';
 import { theme } from '../../../styles/theme';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { RootState } from '../../../app/store';
+import useSearch from '../../../hooks/eshop/useSearch';
+import useProducts from '../../../hooks/eshop/useProducts';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { setSearchQuery } from '../../../store/search/searchSlice';
+import { RootState } from '../../../app/store';
+import { setCategory } from '../../../store/search/searchSlice';
+import { formatCategoryName } from '../../../utils/searchUtils';
+import CategorySelector from '../search/CategorySelector';
 
 const SearchBar: React.FC = () => {
+  const {
+    search,
+    setSearch,
+    handleSearch,
+    handleKeyPress,
+    handleClearSearch,
+  } = useSearch();
+
+  const {
+    categories,
+    categoriesLoading,
+    categoriesError,
+    fetchProductsByCategory,
+  } = useProducts();
+
   const dispatch = useAppDispatch();
-  const searchQuery = useAppSelector((state: RootState) => state.search.query);
+
+  const selectedCategory = useAppSelector((state: RootState) => state.search.category);
+
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const navigate = useNavigate();
-  const location = useLocation();
 
-  const handleSearch = () => {
-    if (searchQuery.trim() !== '') {
-      navigate(`/eshop/result?query=${encodeURIComponent(searchQuery.trim())}`);
-    }
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = React.useState<boolean>(false);
+
+  const handleOpenCategoryModal = () => {
+    setIsCategoryModalOpen(true);
   };
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      handleSearch();
-    }
+  const handleCloseCategoryModal = () => {
+    setIsCategoryModalOpen(false);
   };
 
-  const handleClearSearch = () => {
-    dispatch(setSearchQuery(''));
-    if (location.pathname !== '/eshop') {
-      navigate('/eshop');
-    }
+  const handleCategorySelect = (category: string) => {
+    dispatch(setCategory(category));
+    // Optionally, fetch products by category immediately
+     fetchProductsByCategory(category);
   };
+
 
   return (
     <Paper
@@ -69,8 +85,9 @@ const SearchBar: React.FC = () => {
           <TextField
             variant="outlined"
             fullWidth
-            value={searchQuery}
-            onChange={(e) => dispatch(setSearchQuery(e.target.value))}
+            autoComplete="off"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             onKeyPress={handleKeyPress}
             InputProps={{
               startAdornment: (
@@ -78,9 +95,9 @@ const SearchBar: React.FC = () => {
                   <SearchIcon />
                 </InputAdornment>
               ),
-              endAdornment: searchQuery && (
+              endAdornment: search && (
                 <InputAdornment position="end">
-                  <IconButton onClick={handleClearSearch}>
+                  <IconButton onClick={handleClearSearch} aria-label="clear search">
                     <CloseIcon />
                   </IconButton>
                 </InputAdornment>
@@ -110,45 +127,62 @@ const SearchBar: React.FC = () => {
 
         {/* Category Selector */}
         <Grid item xs={12} sm={3.5} sx={{ flexGrow: 1, minWidth: 0 }}>
-          <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: "regular" }}>
+          <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 'regular' }}>
             In quale categoria?
           </Typography>
           <Button
             variant="outlined"
             fullWidth
+            onClick={handleOpenCategoryModal}
             sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              textTransform: "none",
-              color: "inherit",
-              border: "1px solid rgba(0, 0, 0, 0.20)",
-              backgroundColor: "white",
-              height: "45px", // Match the height of other inputs
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              textTransform: 'none',
+              color: 'inherit',
+              border: '1px solid rgba(0, 0, 0, 0.20)',
+              backgroundColor: 'white',
+              height: '45px', // Match the height of other inputs
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <SearchIcon />
               <Typography
-                fontWeight={"light"}
+                fontWeight={'light'}
                 sx={{
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
                 }}
               >
-                Tutte le categorie
+                {selectedCategory
+                  ? formatCategoryName(selectedCategory)
+                  : 'Tutte le categorie'}
               </Typography>
             </Box>
           </Button>
+
+          {/* Category Selector Modal */}
+          <CategorySelector
+            open={isCategoryModalOpen}
+            onClose={handleCloseCategoryModal}
+            categories={categories}
+            categoriesLoading={categoriesLoading}
+            categoriesError={categoriesError}
+            onSelect={handleCategorySelect}
+          />
         </Grid>
 
         {/* Region Selector */}
-        <Grid item xs={13} sm={3.5} sx={{ flexGrow: 1, minWidth: 0 }}>
+        <Grid item xs={12} sm={3.5} sx={{ flexGrow: 1, minWidth: 0 }}>
           <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: "regular" }}>
             Dove?
           </Typography>
           <TextField
             variant="outlined"
             fullWidth
+            value="Tutta Italia" // Set the fixed value
+
+            disabled // Disable the TextField to gray it out and prevent interaction
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -156,7 +190,6 @@ const SearchBar: React.FC = () => {
                 </InputAdornment>
               ),
             }}
-            placeholder="City, Region, or State"
             sx={{
               flexGrow: 1,
               "& .MuiInputBase-root": {

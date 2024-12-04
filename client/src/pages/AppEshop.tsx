@@ -1,11 +1,16 @@
 // src/pages/AppEshop.tsx
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import SearchBar from '../components/shop/homepage/SearchBar';
 import FooterEshop from '../components/shop/homepage/FooterEshop';
 
 const AppEshop: React.FC = () => {
+
+  const location = useLocation();
+
+  const showSearchBar = !location.pathname.includes('/eshop/product/');
+
   return (
     <Box
       sx={{
@@ -16,10 +21,11 @@ const AppEshop: React.FC = () => {
         gap: 2,
       }}
     >
-      <SearchBar />
+      {showSearchBar && <SearchBar />}
       <Outlet />
       <FooterEshop />
     </Box>
+    
   );
 };
 

@@ -5,8 +5,8 @@ import { CallbackError, Document, Schema, model } from "mongoose";
 export interface IUser extends Document {
   email: string;
   password?: string;
+  username: string;
   name: string;
-  surname?: string;
   avatar?: string;
   refreshTokens: string[];
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -16,8 +16,8 @@ const userSchema = new Schema<IUser>(
   {
     email: { type: String, required: true, unique: true },
     password: { type: String },
+    username: { type: String, required: true },
     name: { type: String, required: true },
-    surname: { type: String },
     avatar: { type: String },
     refreshTokens: [{ type: String }],
   },

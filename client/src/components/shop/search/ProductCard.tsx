@@ -12,13 +12,19 @@ import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import { Product } from '../../../models/Product';
+import { useNavigate } from 'react-router-dom';
 
 interface ProductCardProps {
   product: Product;
-  onClick?: () => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/eshop/product/${product.id}`);
+  };
+
   return (
     <Card
       sx={{
@@ -26,11 +32,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
         alignItems: 'center',
         borderRadius: 2,
         overflow: 'hidden',
-        cursor: onClick ? 'pointer' : 'default',
+        cursor: 'pointer',
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
-        py:1
+        py: 1,
       }}
-      onClick={onClick}
+      onClick={handleClick}
     >
       {/* Product Thumbnail */}
       <Box sx={{ position: 'relative' }}>
@@ -85,15 +91,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
           flexDirection: 'column',
           justifyContent: 'center',
           padding: '16px',
-          mb: 10
+          mb: 10,
         }}
       >
         <Typography variant="h6">{product.title}</Typography>
         <Typography
           variant="body2"
           sx={{
-            color:
-              product.availabilityStatus === 'In Stock' ? 'red' : 'gray',
+            color: product.availabilityStatus === 'In Stock' ? 'red' : 'gray',
           }}
         >
           {product.availabilityStatus === 'In Stock'

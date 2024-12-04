@@ -8,10 +8,10 @@ import {
 import { verifyRefreshTokenJWT } from "../utils/jwtUtils";
 
 export const register = async (req: Request, res: Response): Promise<void> => {
-  const { email, password, name, surname } = req.body;
+  const { email, password, username, name } = req.body;
 
   try {
-    await registerUserService(email, password, name, surname);
+    await registerUserService(email, password, username, name);
     res.status(201).json({
       message: "User registered successfully.",
     });

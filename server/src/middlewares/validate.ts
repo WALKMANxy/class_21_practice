@@ -14,7 +14,7 @@ export const checkValidation = (
       .map((err) => err.msg)
       .join(" ");
 
-    res.status(400).json({
+    res.status(422).json({
       message: allErrorMessages,
       errors: errors.array(),
     });

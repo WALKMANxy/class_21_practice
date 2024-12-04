@@ -4,6 +4,7 @@ import { lazy, Suspense } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import Loader from './components/common/Loader';
 import Layout from './layout/layout';
+import ProductDetailsPage from './pages/ProductDetailsPage';
 
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const AppEshop = lazy(() => import('./pages/AppEshop'));
@@ -47,6 +48,14 @@ const router = createBrowserRouter([
             element: (
               <Suspense fallback={<Loader fadeout />}>
                 <ProductListPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'product/:id',
+            element: (
+              <Suspense fallback={<Loader fadeout />}>
+                <ProductDetailsPage />
               </Suspense>
             ),
           },

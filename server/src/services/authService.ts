@@ -21,8 +21,8 @@ const validatePassword = (password: string): string | null => {
 export const registerUserService = async (
   email: string,
   password: string,
-  name: string,
-  surname?: string
+  username: string,
+  name: string
 ): Promise<IUser> => {
   // Check if the user already exists
   const existingUser = await User.findOne({ email });
@@ -40,8 +40,8 @@ export const registerUserService = async (
   const user = new User({
     email,
     password,
+    username,
     name,
-    surname,
   });
 
   await user.save();

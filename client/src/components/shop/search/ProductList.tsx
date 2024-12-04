@@ -12,9 +12,10 @@ import { useAppSelector } from "../../../app/hooks";
 import useProducts from "../../../hooks/eshop/useProducts";
 import ProductCard from "./ProductCard";
 import { IOSSwitch } from "../../../styles/StyledComponents";
+import { RootState } from "../../../app/store";
 
 const ProductsList: React.FC = () => {
-  const { products, fetchProducts, searchProducts, totalProducts } =
+  const { products,  searchProducts, totalProducts } =
     useProducts();
   const [fastShippingOnly, setFastShippingOnly] = useState(false);
   const [promoActiveOnly, setPromoActiveOnly] = useState(false);
@@ -25,14 +26,16 @@ const ProductsList: React.FC = () => {
   const perPage = 12;
   const totalPages = Math.ceil(totalProducts / perPage);
 
+  const selectedCategory = useAppSelector((state: RootState) => state.search.category);
+
+  
+
+
   useEffect(() => {
     const skip = (currentPage - 1) * perPage;
-    if (searchQuery) {
-      searchProducts(searchQuery, perPage, skip);
-    } else {
-      fetchProducts(perPage, skip);
-    }
-  }, [searchQuery, currentPage, fetchProducts, searchProducts]);
+    searchProducts(searchQuery || "", perPage, skip);
+  }, [searchQuery, selectedCategory, currentPage, searchProducts]);
+  
 
   useEffect(() => {
     let filtered = products;
@@ -150,9 +153,6 @@ const ProductsList: React.FC = () => {
                 <Grid item xs={12} key={product.id}>
                   <ProductCard
                     product={product}
-                    onClick={() => {
-                      // Placeholder for onClick action
-                    }}
                   />
                 </Grid>
               ))}

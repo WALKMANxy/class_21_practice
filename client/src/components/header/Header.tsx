@@ -24,9 +24,9 @@ const Header: React.FC<HeaderProps> = ({ headerProp }) => {
   // Function to handle logo click
   const handleLogoClick = () => {
     if (headerProp === 'shop') {
-      navigate('/');
+      navigate('/eshop');
     } else if (headerProp === 'trains') {
-      navigate('/');
+      navigate('/trains');
     } else {
       navigate('/');
     }

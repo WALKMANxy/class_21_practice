@@ -7,6 +7,7 @@ import compression from "compression";
 import helmet from "helmet";
 import { rateLimiter } from "./middlewares/rateLimiter";
 import authRoutes from "./routes/auth";
+import userProfileRoutes from "./routes/userProfile";
 
 const app = express();
 const PORT = config.port;
@@ -35,6 +36,7 @@ app.use(rateLimiter);
 app.use(express.json());
 
 app.use("/auth", authRoutes);
+app.use("user", userProfileRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`, {
